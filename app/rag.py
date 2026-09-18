@@ -1,8 +1,8 @@
 import streamlit as st
-import google.generativeai as genai
+from google import genai
 from pypdf import PdfReader
 
-genai.configure(
+client = genai.Client(
     api_key=st.secrets["GEMINI_API_KEY"]
 )
 
@@ -40,30 +40,29 @@ def ask_question(pdf, question):
     prompt = f"""
 You are a College Course Advisor.
 
-Answer the user's question using ONLY the uploaded curriculum.
+Answer the question ONLY using the uploaded curriculum.
 
-User Question:
+Question:
 {question}
 
 Curriculum:
 {context}
 
-Instructions:
-
+Rules:
 1. Give a clear and simple answer.
 2. Do not invent information.
-3. Use the exact course names and credits from the curriculum.
-4. If the question asks about a semester, give the subjects for that semester.
-5. If the question asks about prerequisites, identify the prerequisite courses.
-6. If the question asks about credits, give the correct credits.
-7. Mention the relevant page number.
-8. If the information is not available, say:
+3. Use exact course names from the curriculum.
+4. Give credits when asked.
+5. Give prerequisites when asked.
+6. Mention the relevant page number.
+7. If the information is not available, say:
 "I could not find this information in the uploaded curriculum."
 """
 
-    model = genai.GenerativeModel("gemini-2.5-flash")
-
-    response = model.generate_content(prompt)
+    response = client.models.generate_content(
+        model="gemini-3.6-flash",
+        contents=prompt
+    )
 
     sources = []
 
