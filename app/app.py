@@ -8,10 +8,6 @@ st.set_page_config(
 
 st.title("🎓 College Course Advisor")
 
-st.write(
-    "Upload your official curriculum PDF and ask questions about courses."
-)
-
 pdf = st.file_uploader(
     "Upload Curriculum PDF",
     type=["pdf"]
@@ -31,7 +27,6 @@ if st.button("Ask"):
         st.warning("Please enter a question.")
 
     else:
-
         with st.spinner("Finding answer..."):
 
             try:
