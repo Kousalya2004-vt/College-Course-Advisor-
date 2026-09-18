@@ -1,7 +1,10 @@
 import re
 import numpy as np
+import streamlit as st
 import google.generativeai as genai
 from pypdf import PdfReader
+
+genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 
 def get_embedding(text):
     result = genai.embed_content(
